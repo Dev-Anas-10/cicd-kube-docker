@@ -100,7 +100,7 @@ pipeline {
         stage('Kubernetes Deploy') {
 	  agent { label 'KOPS' }
             steps {
-                    sh "kubectl create namespace prod"
+                    sh "kubectl get namespace prod >/dev/null 2>&1 || kubectl create namespace prod"
                     sh "helm upgrade --install --force vproifle-stack helm/vprofilecharts --set appimage=${registry}:${BUILD_NUMBER} --namespace prod"
             }
         }
